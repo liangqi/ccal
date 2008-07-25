@@ -1,15 +1,20 @@
-Copyright (c) 2000-2006, by Zhuo Meng (zhuo@thunder.cwru.edu).
+Copyright (c) 2000-2008, by Zhuo Meng (zxm8@case.edu).
 All rights reserved.
 
 Distributed under the terms of the GNU General Public License as
 published by the Free Software Foundation; either version 2 of the
-License, or (at your option) any later version.
+License, or (at your option) any later version. Portions related to
+computing of Chinese dates are distributed under the terms of the GNU
+Less General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option)
+any later version.
 
 The ccal utility writes a Gregorian calendar together with Chinese calendar
 to standard output. Its usage is similar to the cal program generally
 available on unix platforms. In addition to ASCII output, it can also
-generate Encapsulated PostScript and HTML table outputs for use in
-do-it-yourself calendars and web pages.
+generate Encapsulated PostScript, HTML table and XML outputs for use in
+do-it-yourself calendars and web pages. It supports both simplified
+and traditional Chinese characters.
 
 The latest version of this utility and its web interface, which offers
 more functionality including automated creation of a customized calendar

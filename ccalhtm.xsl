@@ -16,7 +16,7 @@
     <html>
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="GENERATOR" content="ccal-2.4 by Zhuo Meng, http://thunder.cwru.edu/ccal/" />
+        <meta name="GENERATOR" content="ccal-2.5 by Zhuo Meng, http://thunder.cwru.edu/ccal/" />
         <title>Chinese Calendar for <xsl:value-of select="$titlevalue" /></title>
       </head>
       <body>

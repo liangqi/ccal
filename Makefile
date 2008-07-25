@@ -26,6 +26,7 @@ COMPONENTS= \
 	moonphase \
 	misc \
 	solarterm \
+	tt2ut \
 	novas \
 	novascon \
 	solsys3 \

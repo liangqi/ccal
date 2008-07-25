@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2000-2006, by Zhuo Meng (zhuo@thunder.cwru.edu).
+   Copyright (c) 2000-2008, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
-   Distributed under the terms of the GNU General Public License as
+   Distributed under the terms of the GNU Lesser General Public License as
    published by the Free Software Foundation; either version 2 of the
    License, or (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
+   GNU Lesser General Public License for more details.
 
-   You should have received a copy of the GNU General Public License
+   You should have received a copy of the GNU Lesser General Public License
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
@@ -123,7 +123,7 @@ double lunaryear(short int year, vdouble& vterms, double& lastnew,
         /* Determine new moons since day after previous winter solstice */
         double jstart = jdpws + 0.5;
         jstart = int(jstart) + 0.5;
-        double jend = julian_date(year, 12, 31, 23.999);
+        double jend = julian_date(year, 12, 31, 23.9999);
         mphases(jstart, jend, 0, vmoons);
         /* Determine the month numbers */
         vmonth.resize(vmoons.size());
@@ -167,7 +167,10 @@ double lunaryear(short int year, vdouble& vterms, double& lastnew,
                     vmonth[i] = ++n;
                 else
                 {
-                    vmonth[i] = n + 0.5;
+                	if (n == 0)
+                		vmonth[i] = 12.5;
+                	else
+                		vmonth[i] = n + 0.5;
                     bleaped = true;
                 }
                 if (n == 12)
@@ -197,7 +200,15 @@ double lunaryear(short int year, vdouble& vterms, double& lastnew,
         nextnew = vnextnew.back();
         /* Convert to whole day numbers */
         TrimHour(vmoons);
+        /* Apply correction from DE405 */
+    	if (year == 2057)
+    		vmoons[8]++;
         TrimHour(vterms);
+        /* Apply correction from DE405 */
+    	if (year == 1878)
+    		vterms[8]++;
+    	if (year == 1951)
+    		vterms[23]++;
     }
     /* Scan for leap month and return the calendar month */
     if (int(lastmon + 0.9) != int(lastmon)) /* lastmon is a leap month */

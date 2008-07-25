@@ -1,3 +1,14 @@
+July 25, 2008, changes from 2.4 to 2.5:
+* Adopted formulae published by NASA in computing delta T for improved
+  accuracy.
+* Updated parameters for moon phase computation from 2005 printing of
+  second edition of Astronomical Algorithms by Meeus.
+* Added corrections based on results from DE405 for a few cases for
+  years between 1645 and 2200. 
+* Improvements in efficiency of computation.
+January 6, 2008:
+* Rereleased 2.4 to distribute portions of ccal related to computing
+  Chinese dates under LGPL.
 March 26, 2006, changes from 2.3.3 to 2.4:
 * Added XML mode.
 * Added ccalhtm.xsl sample.

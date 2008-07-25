@@ -15,21 +15,12 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-/* Computes Beijing time of solarterms for a given year */
-#ifndef SOLARTERM_H
-#define SOLARTERM_H
+/* Converts TT to UT */
+#ifndef TT2UT_H
+#define TT2UT_H
 
-#ifndef NO_NAMESPACE
-#include <vector>
-typedef std::vector<double> vdouble;
-#else
-#include <vector.h>
-typedef vector<double> vdouble;
-#endif
-
-/* Given year, computes the julian date (Beijing Time) of the winter solstice
-   of previous year (jdpws) and all solarterms of the given year (vjdterms)
+/* Give TT in julian day, computes UT in julian day
 */
-void solarterm(short int year, double& jdpws, vdouble& vjdterms);
+double tt2ut(double jd);
 
-#endif /* SOLARTERM_H */
+#endif /* TT2UT_H */

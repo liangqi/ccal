@@ -1,17 +1,17 @@
 /*
-   Copyright (c) 2000-2006, by Zhuo Meng (zhuo@thunder.cwru.edu).
+   Copyright (c) 2000-2008, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
-   Distributed under the terms of the GNU General Public License as
+   Distributed under the terms of the GNU Lesser General Public License as
    published by the Free Software Foundation; either version 2 of the
    License, or (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
+   GNU Lesser General Public License for more details.
 
-   You should have received a copy of the GNU General Public License
+   You should have received a copy of the GNU Lesser General Public License
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
@@ -20,6 +20,7 @@
 */
 
 #include "mphases.h"
+#include "tt2ut.h"
 #include "moon.h"
 
 #ifndef NO_NAMESPACE
@@ -57,11 +58,13 @@ void mphases(double tstart, double tend, int phase, vdouble& vjdphases)
     }
 /* Compute subsequent phases until after tend */
     vjdphases.erase(vjdphases.begin(), vjdphases.end());
+    jd1 = tt2ut(jd1);
     vjdphases.push_back(jd1);
     while (jd1 < tend - 29)
     {
         lun++;
         jd1 = moonphasebylunation(lun, phase) + offs;
+        jd1 = tt2ut(jd1);
         if (jd1 < tend)
             vjdphases.push_back(jd1);
     }

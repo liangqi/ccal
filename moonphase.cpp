@@ -1,5 +1,5 @@
 /*
-   Copyright 1996, Christopher Osburn, Lunar Outreach Services, 
+   Copyright 1996, Christopher Osburn, Lunar Outreach Services,
 
    As part of the ccal program by Zhuo Meng, this version is
    distributed under the terms of the GNU General Public License as
@@ -19,6 +19,7 @@
    1996/02/11
 
    calculate phase of the moon per Meeus Ch. 47
+   updated with parameters from Ch. 49 of 2005 printing of 2nd Edition
 
    Parameters:
       int lun:  phase parameter.  This is the number of lunations
@@ -61,20 +62,20 @@ extern double moonphase(double k, int phi)
   T = k / 1236.85;                            /* (47.3) */
 
   /* this is the first approximation.  all else is for style points! */
-  JDE = 2451550.09765 + (29.530588853 * k)    /* (47.1) */
-        + T * T * (0.0001337 + T * (-0.000000150 + 0.00000000073 * T));
+  JDE = 2451550.09766 + (29.530588861 * k)    /* (47.1) */
+        + T * T * (0.00015437 + T * (-0.000000150 + 0.00000000073 * T));
 
   /* these are correction parameters used below */
   E = 1.0                                     /* (45.6) */
       + T * (-0.002516 + -0.0000074 * T);
-  M = 2.5534 + 29.10535669 * k                /* (47.4) */
-      + T * T * (-0.0000218 + -0.00000011 * T);
+  M = 2.5534 + 29.10535670 * k                /* (47.4) */
+      + T * T * (-0.0000014 + -0.00000011 * T);
   M1 = 201.5643 + 385.81693528 * k            /* (47.5) */
-       + T * T * (0.0107438 + T * (0.00001239 + -0.000000058 * T));
-  F = 160.7108 + 390.67050274 * k             /* (47.6) */
-      + T * T * (-0.0016341 * T * (-0.00000227 + 0.000000011 * T));
-  O = 124.7746 - 1.56375580 * k               /* (47.7) */
-      + T * T * (0.0020691 + 0.00000215 * T);
+       + T * T * (0.0107582 + T * (0.00001238 + -0.000000058 * T));
+  F = 160.7108 + 390.67050284 * k             /* (47.6) */
+      + T * T * (-0.0016118 * T * (-0.00000227 + 0.000000011 * T));
+  O = 124.7746 - 1.56375588 * k               /* (47.7) */
+      + T * T * (0.0020672 + 0.00000215 * T);
 
   /* planetary arguments */
   A[0]  = 0; /* unused! */
@@ -107,10 +108,10 @@ extern double moonphase(double k, int phi)
 
   /* ok, we have all the parameters, let's apply them to the JDE.
     (remember the JDE?  this is a program about the JDE...)        */
-  
+
   switch(phi)
   {
-    /* a special case for each different phase.  NOTE!, 
+    /* a special case for each different phase.  NOTE!,
        I'm not treating these in a 0123 order!!!  Pay
        attention, there,  you!                         */
 
@@ -202,7 +203,7 @@ extern double moonphase(double k, int phi)
           + 0.00002         * sin (2.0 * M1 - 2.0 * F)
           + 0.00002         * sin (M1 - M + 2.0 * F)
           - 0.00002         * sin (3.0 * M1 + M);
-    
+
       W = 0.00306
         - 0.00038 * E * cos(M)
         + 0.00026 * cos(M1)

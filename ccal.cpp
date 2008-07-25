@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2000-2006, by Zhuo Meng (zhuo@thunder.cwru.edu).
+   Copyright (c) 2000-2008, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
    Distributed under the terms of the GNU General Public License as
@@ -148,7 +148,7 @@ void PrintMonthNumber(double mnumber)
    bNeedsRun: true if character Run is needed, false otherwise
 */
 void PrintMonth(short int year, short int month, vdouble& vterms,
-                double lastnew, double lastmon, vdouble& vmoons, 
+                double lastnew, double lastmon, vdouble& vmoons,
                 vdouble& vmonth, double nextnew, int pmode,
                 bool bSingle, int nEncoding, bool bNeedsRun)
 {
@@ -200,6 +200,8 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
         jdnext = julian_date(year + 1, 1, 1, 12.0);
     /* Set solarterm counter to day of 1st term of the calendar month */
     size_t termcnt = (month - 1) * 2;
+    if (vterms[termcnt] < jdcnt)
+    	termcnt ++;
     /* Set lunar month counter to the 1st lunar month of the calendar month */
     size_t moncnt = 0;
     while (moncnt < vmoons.size() && vmoons[moncnt] < jdcnt)
@@ -215,7 +217,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
     if (jdcnt == vmoons[moncnt])
         ldcnt = 1;
     /* Day of week of the 1st of month */
-    int dofw = (size_t(jdcnt) + 1) % 7; 
+    int dofw = (size_t(jdcnt) + 1) % 7;
     /* Header of the month */
     short int cyear = (year - 1984) % 60;
     if (cyear < 0)
@@ -1046,9 +1048,9 @@ int main(int argc, char** argv)
         printf("ccal: Invalid month value: month 1-12.\n");
         exit(1);
     }
-    if (year < 1645)
+    if (year < 1645 || year > 7000)
     {
-        printf("ccal: Invalid year value: year > 1645.\n");
+        printf("ccal: Invalid year value: year 1645-7000.\n");
         exit(1);
     }
     if (IsLeapYear(year))

@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2000-2006, by Zhuo Meng (zhuo@thunder.cwru.edu).
+   Copyright (c) 2000-2008, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
    Distributed under the terms of the GNU General Public License as
@@ -19,6 +19,6 @@
 #ifndef VERSTR_H
 #define VERSTR_H
 
-const char versionstr[]="2.4";
+const char versionstr[]="2.5";
 
 #endif /*VERSTR_H*/
