@@ -1,3 +1,6 @@
+August 15, 2009, changes from 2.5 to 2.5.1:
+* Updated layout code to render the 6th week line only when necessary.
+* Updated sample style sheets to do the same.
 July 25, 2008, changes from 2.4 to 2.5:
 * Adopted formulae published by NASA in computing delta T for improved
   accuracy.

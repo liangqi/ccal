@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ccal="http://thunder.cwru.edu/ccal/">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ccal="http://ccal.chinesebay.com/ccal/">
   <xsl:template match="/">
     <xsl:variable name="yearvalue" select="ccal:year/@value" />
     <xsl:variable name="titlevalue">

@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2000-2008, by Zhuo Meng (zxm8@case.edu).
+   Copyright (c) 2000-2009, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
    Distributed under the terms of the GNU Lesser General Public License as
@@ -223,7 +223,7 @@ double lunaryear(short int year, vdouble& vterms, double& lastnew,
         if (int(vmonth[i] + 0.9) != int(vmonth[i])) /* found leap month */
         {
             double jdfirst;
-            while (monnum <= 12 && (jdfirst = julian_date(year, monnum, 1, 12.0)) < vmoons[i])
+            while ((jdfirst = julian_date(year, monnum, 1, 12.0)) < vmoons[i] && monnum <= 12)
                 monnum++;
             if (monnum == 13)
                 return 12.0;

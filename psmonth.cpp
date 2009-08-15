@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2000-2008, by Zhuo Meng (zxm8@case.edu).
+   Copyright (c) 2000-2009, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
    Distributed under the terms of the GNU General Public License as
@@ -189,10 +189,6 @@ void PrintHeaderPS(char *titlestr, bool bIsSim, bool bNeedsRun)
         printf("/F {RR Fcolor fill grestore} def\n");
         printf("/Lcolor {0 0 0 K} B\n");
         printf("/L {RR 0.1 setlinewidth Lcolor stroke grestore} def\n");
-        printf("/Mf {gsave currentpoint translate\n");
-        printf("0 0 600 375 L\n600 0 600 375 L\n1200 0 600 375 L\n");
-        printf("1800 0 600 375 L\n2400 0 600 375 L\n3000 0 600 375 L\n");
-        printf("3600 0 600 375 L\ngrestore} B\n");
     }
     printf("/U {ufill} B\n");
     printf("/ct {currentpoint translate} B\n");
@@ -278,7 +274,7 @@ void PrintHeaderPS(char *titlestr, bool bIsSim, bool bNeedsRun)
     }
     if (bYear)
     {
-        PrintHeaderMonthPS(NULL, 0, false, bIsSim, bNeedsRun);
+        PrintHeaderMonthPS(NULL, 0, false, bIsSim, bNeedsRun, 6);
         printf("gsave 30 300 moveto currentpoint translate\n");
         printf("%% Grid lines\ngsave 0.9 0.9 1 K 3 ppts setlinewidth\n");
         printf("newpath 0 2236 m 546 0 rlineto stroke\n");
@@ -299,9 +295,10 @@ void PrintHeaderPS(char *titlestr, bool bIsSim, bool bNeedsRun)
    bSingle, true for single month, false for whole year
    bIsSim, true for simplified characters, false for traditional characters
    bNeedsRun: true if character Run is needed, false otherwise
+   nWeeks: number of week lines in month
 */
 void PrintHeaderMonthPS(char *monthhead, short int month, bool bSingle,
-                        bool bIsSim, bool bNeedsRun)
+                        bool bIsSim, bool bNeedsRun, int nWeeks)
 {
     if (!bSingle || strstr(monthhead, "m12 ") != NULL ||
         month == 2 || month == 3)
@@ -1090,6 +1087,11 @@ void PrintHeaderMonthPS(char *monthhead, short int month, bool bSingle,
         printf("\"!@Z8\"!@ZL!`T6*!7V'8!7V'$!MBKF!MBKZ!7V'8!`T4d!`T4P\"\"44%%\"\"449!`T4d~>\n");
         printf("<~!!*0*,Qe2q!sKnO\"XF0N\"!Rmt!sKtQ,m=AS!sKkN!@.aJ,Qe&m!s'YL$3~>}U NC} B\n");
     }
+    printf("/BH {%d} def\n", 2250 / nWeeks);
+    printf("/Mf {gsave currentpoint translate\n");
+    printf("0 0 600 BH L\n600 0 600 BH L\n1200 0 600 BH L\n");
+    printf("1800 0 600 BH L\n2400 0 600 BH L\n3000 0 600 BH L\n");
+    printf("3600 0 600 BH L\ngrestore} B\n");
     printf("%%%%EndSetup\n");
     printf("\n%%%%Page: 1 1\n");
     if (bSingle)
@@ -1099,8 +1101,8 @@ void PrintHeaderMonthPS(char *monthhead, short int month, bool bSingle,
         int i;
         for (i = 0; i < 7; i++)
             printf("%d 2250 600 150 F\n", (i * 600));
-        for (i = 0; i < 6; i++)
-            printf("0 %d m Mf\n", (1875 - i * 375));
+        for (i = 0; i < nWeeks; i++)
+            printf("0 %d m Mf\n", (i * 2250 / nWeeks));
         printf("%% Month heading\n");
     }
 }

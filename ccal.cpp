@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2000-2008, by Zhuo Meng (zxm8@case.edu).
+   Copyright (c) 2000-2009, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
    Distributed under the terms of the GNU General Public License as
@@ -218,6 +218,9 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
         ldcnt = 1;
     /* Day of week of the 1st of month */
     int dofw = (size_t(jdcnt) + 1) % 7;
+    int nWeeks = 5;
+    if ((dofw > 4 && daysinmonth[month] == 31) || (dofw > 5 && daysinmonth[month] == 30))
+    	nWeeks = 6;
     /* Header of the month */
     short int cyear = (year - 1984) % 60;
     if (cyear < 0)
@@ -481,7 +484,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
     }
     else if (bSingle)
     {
-        PrintHeaderMonthPS(monthhead, month, true, bIsSim, bNeedsRun);
+        PrintHeaderMonthPS(monthhead, month, true, bIsSim, bNeedsRun, nWeeks);
         char *p1 = strstr(monthhead, "(");
         char *p2 = strstr(monthhead, ")");
         int nlen = int(p2 - p1) - 1;
@@ -574,7 +577,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
     /* At most can be six weeks */
     int w;
     char cdayname[21];
-    for (w = 0; w < 6; w++)
+    for (w = 0; w < nWeeks; w++)
     {
         if (pmode == 1)
         {
@@ -666,6 +669,8 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
             {
                 int posx = i * 600 + 50;
                 int posy = 1875 - w * 375 + 220;
+                if (nWeeks == 5)
+                	posy = 1800 - w * 450 + 295;
                 if (i == 0)
                     printf("gsave 1 0 0 K\n");
                 else if (i == 6)
@@ -1063,7 +1068,7 @@ int main(int argc, char** argv)
     if (pmode == 3)
     {
         printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-        printf("<ccal:year value=\"%d\" xmlns:ccal=\"http://thunder.cwru.edu/ccal/\">\n", year);
+        printf("<ccal:year value=\"%d\" xmlns:ccal=\"http://ccal.chinesebay.com/ccal/\">\n", year);
     }
     if (bSingle)
     {

@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2000-2008, by Zhuo Meng (zxm8@case.edu).
+   Copyright (c) 2000-2009, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
    Distributed under the terms of the GNU General Public License as
@@ -56,9 +56,10 @@ void PrintHeaderPS(char *titlestr, bool bIsSim, bool bNeedsRun);
    bSingle, true for single month, false for whole year
    bIsSim: true for simplified characters, false for traditional characters
    bNeedsRun: true if character Run is needed, false otherwise
+   nWeeks: number of week lines in month
 */
 void PrintHeaderMonthPS(char *monthhead, short int month, bool bSingle,
-                        bool bIsSim, bool bNeedsRun);
+                        bool bIsSim, bool bNeedsRun, int nWeeks);
 
 void PrintClosingPS();
 

@@ -1,4 +1,4 @@
-Copyright (c) 2000-2008, by Zhuo Meng (zxm8@case.edu).
+Copyright (c) 2000-2009, by Zhuo Meng (zxm8@case.edu).
 All rights reserved.
 
 Distributed under the terms of the GNU General Public License as
@@ -20,7 +20,7 @@ The latest version of this utility and its web interface, which offers
 more functionality including automated creation of a customized calendar
 with a picture of your choice, can be found at the following web site:
 
-http://thunder.cwru.edu/ccal/index.html
+http://ccal.chinesebay.com/ccal/index.html
 
 Build and Install:
 To build, just type
