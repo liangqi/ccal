@@ -19,6 +19,6 @@
 #ifndef VERSTR_H
 #define VERSTR_H
 
-const char versionstr[]="2.5.1";
+const char versionstr[]="2.5.2";
 
 #endif /*VERSTR_H*/

@@ -1,3 +1,7 @@
+January 29, 2012, repackaged 2.5.2:
+* Adjusted sequence of includes to satisfy GCC 4.6.
+October 5, 2009, changes from 2.5.1 to 2.5.2:
+* Fixed bug causing 6th week line not to show in certain cases.
 August 15, 2009, changes from 2.5 to 2.5.1:
 * Updated layout code to render the 6th week line only when necessary.
 * Updated sample style sheets to do the same.

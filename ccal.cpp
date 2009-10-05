@@ -17,15 +17,15 @@
 */
 /* Calendar with Chinese calendar */
 
+#include <math.h>
+#include <stdio.h>
+#include <time.h>
+#include <string.h>
 #include "lunaryear.h"
 #include "htmlmonth.h"
 #include "psmonth.h"
 #include "verstr.h"
 #include "novas.h"
-#include <math.h>
-#include <stdio.h>
-#include <time.h>
-#include <string.h>
 
 #ifndef NO_NAMESPACE
 using namespace std;
@@ -219,7 +219,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
     /* Day of week of the 1st of month */
     int dofw = (size_t(jdcnt) + 1) % 7;
     int nWeeks = 5;
-    if ((dofw > 4 && daysinmonth[month] == 31) || (dofw > 5 && daysinmonth[month] == 30))
+    if ((dofw > 4 && daysinmonth[month - 1] == 31) || (dofw > 5 && daysinmonth[month - 1] == 30))
     	nWeeks = 6;
     /* Header of the month */
     short int cyear = (year - 1984) % 60;
