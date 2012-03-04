@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2000-2009, by Zhuo Meng (zxm8@case.edu).
+   Copyright (c) 2000-2012, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
    Distributed under the terms of the GNU General Public License as
@@ -278,7 +278,7 @@ void SetU8Characters(bool bIsSim)
    monname, C string containing the Chinese characters for the month.
             monname should be allocated at least 24 bytes before the call
 */
-void Number2MonthCH(double month, size_t nstart, size_t ndays, int nEncoding, char *monname)
+void Number2MonthCH(double month, int nstart, int ndays, int nEncoding, char *monname)
 {
     pc22_4 miscchar;
     if (nEncoding == 'u')
@@ -288,7 +288,7 @@ void Number2MonthCH(double month, size_t nstart, size_t ndays, int nEncoding, ch
     else
         miscchar = &B5miscchar;
     monname[0] = 0; /* Clear */
-    size_t nmonth = size_t(month);
+    int nmonth = int(month);
     if (month - nmonth == 0.5) /* Leap month */
         strcat(monname, (*miscchar)[13]);
     if (nmonth > 10)
@@ -319,7 +319,7 @@ void Number2MonthCH(double month, size_t nstart, size_t ndays, int nEncoding, ch
    dayname, C string containing the Chinese characters for the day.
             dayname should be allocated at least 7 bytes before the call
 */
-void Number2DayCH(size_t nday, int nEncoding, char *dayname)
+void Number2DayCH(int nday, int nEncoding, char *dayname)
 {
     pc22_4 miscchar;
     if (nEncoding == 'u')
@@ -361,7 +361,7 @@ void Number2DayCH(size_t nday, int nEncoding, char *dayname)
    year, Gregorian year number, between 1645 and 9999
    nEncoding: 'g' for GB, 'b' for BIG5, 'u' for UTF-8
 */
-void PrintHeaderHTML(char *titlestr, size_t month, size_t year, int nEncoding)
+void PrintHeaderHTML(char *titlestr, int month, int year, int nEncoding)
 {
     printf("<html>\n<head>\n<meta http-equiv=\"Content-Type\" ");
     if (nEncoding == 'u')

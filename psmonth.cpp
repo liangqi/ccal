@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2000-2009, by Zhuo Meng (zxm8@case.edu).
+   Copyright (c) 2000-2012, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
    Distributed under the terms of the GNU General Public License as
@@ -59,10 +59,10 @@ char PSdizhi[12][5] = {"d00 ", "d01 ", "d02 ", "d03 ", "d04 ", "d05 ",
    monname, C string containing the PS characters for the month.
             monname should be allocated at least 44 bytes before the call
 */
-void Number2MonthPS(double month, size_t nstart, size_t ndays, bool bYear, char *monname)
+void Number2MonthPS(double month, int nstart, int ndays, bool bYear, char *monname)
 {
     monname[0] = 0; /* Clear */
-    size_t nmonth = size_t(month);
+    int nmonth = int(month);
     if (month - nmonth == 0.5) /* Leap month */
         strcat(monname, (bYear) ? PSmiscchar[13] : PSbigmchar[13]);
     if (nmonth > 10)
@@ -95,7 +95,7 @@ void Number2MonthPS(double month, size_t nstart, size_t ndays, bool bYear, char 
    dayname, C string containing the PS characters for the day.
             dayname should be allocated at least 9 bytes before the call
 */
-void Number2DayPS(size_t nday, char *dayname)
+void Number2DayPS(int nday, char *dayname)
 {
     dayname[0] = 0; /* Clear */
     if (nday <= 10)

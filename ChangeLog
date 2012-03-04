@@ -1,3 +1,8 @@
+March 4, 2012, changes from 2.5.2 to 2.5.3:
+* Incorporated latest updates in NOVAS-C package.
+* Replaced size_t with int to avoid problems on some 64-bit platforms.
+* For console output, highlights today with ANSI reverse video on non-Windows
+  platforms, as recommended by Mr. Daniel Lin.
 January 29, 2012, repackaged 2.5.2:
 * Adjusted sequence of includes to satisfy GCC 4.6.
 October 5, 2009, changes from 2.5.1 to 2.5.2:

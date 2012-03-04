@@ -20,24 +20,24 @@
 
    Naval Observatory Vector Astrometry Software (NOVAS)
    C Edition, Version 3.1
-
-   solarsystem.h: Header file for solsys1.c, solsys2.c, & solsys3.c
+   
+   nutation.h: Header file for nutation models
 
    U. S. Naval Observatory
    Astronomical Applications Dept.
-   Washington, DC
+   Washington, DC 
    http://www.usno.navy.mil/USNO/astronomical-applications
 */
 
-#ifndef _SOLSYS_
-   #define _SOLSYS_
+#ifndef _NUTATION_
+   #define _NUTATION_
 
 /*
    Function prototypes
 */
 
-   short int solarsystem (double tjd, short int body, short int origin,
+   void iau2000a (double jd_high, double jd_low,
 
-                          double *position, double *velocity);
+                  double *dpsi, double *deps);
 
 #endif

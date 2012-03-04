@@ -29,6 +29,7 @@ COMPONENTS= \
 	tt2ut \
 	novas \
 	novascon \
+	nutation \
 	solsys3 \
 	yearcache
 # If you don't want to use the year cache, comment the previous line

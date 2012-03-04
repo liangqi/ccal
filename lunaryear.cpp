@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2000-2009, by Zhuo Meng (zxm8@case.edu).
+   Copyright (c) 2000-2012, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
    Distributed under the terms of the GNU Lesser General Public License as
@@ -39,10 +39,10 @@ using namespace std;
 */
 bool IsNormalYear(double jdws, vdouble& vmoons)
 {
-    size_t i = 0, nmonth = 0;
+    int i = 0, nmonth = 0;
     double jend = jdws + 0.5;
     jend = int(jend) + 0.5;
-    while (vmoons[i++] < jend && i <= vmoons.size())
+    while (i < int(vmoons.size()) && vmoons[i++] < jend)
         nmonth++;
     assert(nmonth == 12 || nmonth == 13);
     if (nmonth == 12) /* Normal year */
@@ -63,8 +63,8 @@ bool IsZhongQiInMonth(double jstart, double jend, vdouble& vterms)
     jstart = int(jstart) + 0.5;
     jend -= 0.5;
     jend = int(jend) + 0.5;
-    size_t i;
-    for (i = 1; i < vterms.size(); i += 2)
+    int i;
+    for (i = 1; i < int(vterms.size()); i += 2)
     {
         if (vterms[i] >= jstart && vterms[i] < jend)
             return true;
@@ -81,10 +81,10 @@ bool IsZhongQiInMonth(double jstart, double jend, vdouble& vterms)
 */
 void TrimHour(vdouble& vjds)
 {
-    size_t i, t;
-    for (i = 0; i < vjds.size(); i++)
+    int i, t;
+    for (i = 0; i < int(vjds.size()); i++)
     {
-        t = size_t(vjds[i] + 0.5);
+        t = int(vjds[i] + 0.5);
         vjds[i] = double(t);
     }
 }
@@ -127,11 +127,11 @@ double lunaryear(short int year, vdouble& vterms, double& lastnew,
         mphases(jstart, jend, 0, vmoons);
         /* Determine the month numbers */
         vmonth.resize(vmoons.size());
-        size_t i;
+        int i;
         if (IsNormalYear(vterms[23], vmoons)) /* Normal year */
         {
-            size_t n = 12;
-            for (i = 0; i < vmoons.size(); i++)
+            int n = 12;
+            for (i = 0; i < int(vmoons.size()); i++)
             {
                 vmonth[i] = n;
                 if (n == 12)
@@ -159,8 +159,8 @@ double lunaryear(short int year, vdouble& vterms, double& lastnew,
         else /* Leap year */
         {
             bool bleaped = false;
-            size_t n = 11;
-            for (i = 0; i < vmoons.size() - 1; i++)
+            int n = 11;
+            for (i = 0; i < int(vmoons.size()) - 1; i++)
             {
                 /* Check if a zhongqi falls inside the month */
                 if (bleaped || IsZhongQiInMonth(vmoons[i], vmoons[i + 1], vterms))
@@ -200,11 +200,10 @@ double lunaryear(short int year, vdouble& vterms, double& lastnew,
         nextnew = vnextnew.back();
         /* Convert to whole day numbers */
         TrimHour(vmoons);
-        /* Apply correction from DE405 */
-    	if (year == 2057)
-    		vmoons[8]++;
         TrimHour(vterms);
         /* Apply correction from DE405 */
+    	if (year == 1774)
+    		vterms[2]++;
     	if (year == 1878)
     		vterms[8]++;
     	if (year == 1951)
@@ -217,8 +216,8 @@ double lunaryear(short int year, vdouble& vterms, double& lastnew,
             return 0.5;
     }
     short int monnum = 2;
-	size_t i;
-    for (i = 0; i < vmoons.size(); i++)
+	int i;
+    for (i = 0; i < int(vmoons.size()); i++)
     {
         if (int(vmonth[i] + 0.9) != int(vmonth[i])) /* found leap month */
         {
@@ -228,7 +227,7 @@ double lunaryear(short int year, vdouble& vterms, double& lastnew,
             if (monnum == 13)
                 return 12.0;
             /* See if leap month runs into next month */
-            if (i != vmoons.size() - 1 && jdfirst < vmoons[i + 1])
+            if (i != int(vmoons.size()) - 1 && jdfirst < vmoons[i + 1])
                 return (monnum - 0.5); /* Yes */
             else
                 return (monnum - 1.0); /* No */

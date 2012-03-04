@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2000-2009, by Zhuo Meng (zxm8@case.edu).
+   Copyright (c) 2000-2012, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
    Distributed under the terms of the GNU Lesser General Public License as
@@ -41,7 +41,7 @@ double timeangle(double t)
     double y, angle;
     double dummy, secdiff, tdb, lighttime;
 
-    tdb2tdt(t, &dummy, &secdiff);
+    tdb2tt(t, &dummy, &secdiff);
     tdb = t + secdiff / 86400.0;
     solarsystem(tdb, 3, HELIOC, eposh, evelh);
     solarsystem(tdb, 3, BARYC, eposb, evelb);
@@ -49,10 +49,10 @@ double timeangle(double t)
     spos[0] = -eposh[0];
     spos[1] = -eposh[1];
     spos[2] = -eposh[2];
-    lighttime = sqrt(spos[0]*spos[0] + spos[1]*spos[1] + spos[2]*spos[2]) / C;
+    lighttime = sqrt(spos[0]*spos[0] + spos[1]*spos[1] + spos[2]*spos[2]) / C_AUDAY;
     aberration(spos, evelb, lighttime, sposg);
     precession(T0, sposg, tdb, spos);
-    nutate(tdb, FN0, spos, sposg);
+    nutation(tdb, FN0, 0, spos, sposg);
     y = sqrt(sposg[1] * sposg[1] + sposg[2] * sposg[2]);
     y *= (sposg[1] > 0.0) ? 1.0 : -1.0;
     angle = atan2(y, sposg[0]) + PI / 2.0;

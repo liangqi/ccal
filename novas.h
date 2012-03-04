@@ -13,26 +13,24 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   Adapted from novas.h from the NOVAS-C package
    The whole package can be obtained from
-   http://aa.usno.navy.mil/AA/software/novas/novas_c/novasc_info.html
+   http://aa.usno.navy.mil/software/novas/novas_c/novasc_info.php
 
-   The original header comments:
+   Adapted from:
 
-   NOVAS-C Version 2.0 (1 Nov 98)
-   Header file for novas.c
+   Naval Observatory Vector Astrometry Software (NOVAS)
+   C Edition, Version 3.1
 
-   Naval Observatory Vector Astrometry Subroutines
-   C Version
+   novas.h: Header file for novas.c
 
    U. S. Naval Observatory
    Astronomical Applications Dept.
-   3450 Massachusetts Ave., NW
-   Washington, DC  20392-5420
+   Washington, DC
+   http://www.usno.navy.mil/USNO/astronomical-applications
 */
 
-#ifndef _NOVAS_H
-   #define _NOVAS_H
+#ifndef _NOVAS_
+   #define _NOVAS_
 
    #ifndef __STDIO__
       #include <stdio.h>
@@ -62,6 +60,10 @@
       #include "solarsystem.h"
    #endif
 
+   #ifndef _NUTATION_
+      #include "nutation.h"
+   #endif
+
 /*
    Define "origin" constants.
 */
@@ -72,41 +74,52 @@
 /*
    Function prototypes
 */
+   void e_tilt (double jd_tdb, short int accuracy,
 
-   void earthtilt (double tjd,
-                   double *mobl, double *tobl, double *eqeq,
-                   double *psi, double *eps);
+                double *mobl, double *tobl, double *ee, double *dpsi,
+                double *deps);
 
-   short int aberration (double *pos, double *vel, double lighttime,
-                         double *pos2);
+   double ee_ct (double jd_high, double jd_low, short int accuracy);
 
-   void precession (double tjd1, double *pos, double tjd2,
+   void aberration (double *pos, double *ve, double lighttime,
+
                     double *pos2);
 
-   short int nutate (double tjd, short int fn1, double *pos,
-                     double *pos2);
+   short int precession (double jd_tdb1, double *pos1, double jd_tdb2,
 
-   short int nutation_angles (double tdbtime,
-                              double *longnutation,
-                              double *obliqnutation);
+                         double *pos2);
+
+   void nutation (double jd_tdb, short int direction, short int accuracy,
+                  double *pos,
+
+                  double *pos2);
+
+   void nutation_angles (double t, short int accuracy,
+
+                         double *dpsi, double *deps);
 
    void fund_args (double t,
+
                    double a[5]);
 
-   void tdb2tdt (double tdb,
-                 double *tdtjd, double *secdiff);
+   double mean_obliq (double jd_tdb);
 
    void radec2vector (double ra, double dec, double dist,
+
                       double *vector);
 
-   short int solarsystem (double tjd, short int body, short int origin, 
-                          double *pos, double *vel);
+   void tdb2tt (double tdb_jd,
+
+                double *tt_jd, double *secdiff);
 
    double julian_date (short int year, short int month, short int day,
                        double hour);
 
    void cal_date (double tjd,
+
                   short int *year, short int *month, short int *day,
                   double *hour);
+
+   double norm_ang (double angle);
 
 #endif

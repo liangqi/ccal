@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2000-2009, by Zhuo Meng (zxm8@case.edu).
+   Copyright (c) 2000-2012, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
    Distributed under the terms of the GNU General Public License as
@@ -29,6 +29,10 @@
 
 #ifndef NO_NAMESPACE
 using namespace std;
+#endif
+
+#ifndef WIN32
+#define HILIGHTTODAY
 #endif
 
 static char jieqi[24][3] = {"XH", "DH", "LC", "YS", "JZ", "CF", "QM", "GY",
@@ -62,7 +66,6 @@ extern char PSjieqi[24][9];
 extern char GBmiscchar[22][4];
 extern char B5miscchar[22][4];
 extern char U8miscchar[22][4];
-extern char PSmiscchar[16][5];
 extern char PSbigmchar[21][5];
 extern char GBtiangan[10][4];
 extern char B5tiangan[10][4];
@@ -152,6 +155,12 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                 vdouble& vmonth, double nextnew, int pmode,
                 bool bSingle, int nEncoding, bool bNeedsRun)
 {
+#ifdef HILIGHTTODAY
+#define ANSI_REV "\x1b[7m"
+#define ANSI_NORMAL "\x1b[0m"
+    time_t now = time(NULL);
+    struct tm *today = localtime(&now);
+#endif
     pc10_4 CHtiangan = &GBtiangan;
     pc12_4 CHdizhi = &GBdizhi;
     pc22_4 CHmiscchar = &GBmiscchar;
@@ -182,7 +191,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
         CHjieqi = &B5jieqi;
         daynamesCH = &daynamesB5;
     }
-    int nCHchars = strlen((*CHmiscchar)[14]);
+    int nCHchars = (int)strlen((*CHmiscchar)[14]);
     char space1[] = "&#160;";
     char space2[] = " ";
     char *sp;
@@ -199,25 +208,25 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
     else
         jdnext = julian_date(year + 1, 1, 1, 12.0);
     /* Set solarterm counter to day of 1st term of the calendar month */
-    size_t termcnt = (month - 1) * 2;
+    int termcnt = (month - 1) * 2;
     if (vterms[termcnt] < jdcnt)
     	termcnt ++;
     /* Set lunar month counter to the 1st lunar month of the calendar month */
-    size_t moncnt = 0;
-    while (moncnt < vmoons.size() && vmoons[moncnt] < jdcnt)
+    int moncnt = 0;
+    while (moncnt < int(vmoons.size()) && vmoons[moncnt] < jdcnt)
         moncnt++;
     /* In case solarterm and 1st of lunar month falls on the same day */
     bool sameday = false;
     /* Initialize counters for lunar days and days of month */
-    size_t ldcnt, dcnt = 1;
+    int ldcnt, dcnt = 1;
     if (month != 1)
-        ldcnt = size_t(jdcnt - vmoons[moncnt - 1] + 1);
+        ldcnt = int(jdcnt - vmoons[moncnt - 1] + 1);
     else
-        ldcnt = size_t(jdcnt - lastnew + 1);
+        ldcnt = int(jdcnt - lastnew + 1);
     if (jdcnt == vmoons[moncnt])
         ldcnt = 1;
     /* Day of week of the 1st of month */
-    int dofw = (size_t(jdcnt) + 1) % 7;
+    int dofw = (int(jdcnt) + 1) % 7;
     int nWeeks = 5;
     if ((dofw > 4 && daysinmonth[month - 1] == 31) || (dofw > 5 && daysinmonth[month - 1] == 30))
     	nWeeks = 6;
@@ -230,14 +239,14 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
     short int cmonth;
     char leap[2] = {0x00, 0x00};
     char monthhead[200], cmonname[100];
-    size_t nstartlm = size_t(vmoons[moncnt] - jdcnt + 1);
-    size_t ndayslm;
-    if (moncnt < vmoons.size() - 1)
-        ndayslm = size_t(vmoons[moncnt + 1] - vmoons[moncnt]);
+    int nstartlm = int(vmoons[moncnt] - jdcnt + 1);
+    int ndayslm;
+    if (moncnt < int(vmoons.size()) - 1)
+        ndayslm = int(vmoons[moncnt + 1] - vmoons[moncnt]);
     else
-        ndayslm = size_t(nextnew - vmoons.back());
+        ndayslm = int(nextnew - vmoons.back());
     GetMonthNumber(vmonth[moncnt], cmonth, leap);
-    if (pmode == 0 && nEncoding != 'a' || pmode == 1 || pmode == 3)
+    if ((pmode == 0 && nEncoding != 'a') || pmode == 1 || pmode == 3)
         Number2MonthCH(vmonth[moncnt], nstartlm, ndayslm, nEncoding, cmonname);
     else if (pmode == 2)
         Number2MonthPS(vmonth[moncnt], nstartlm, ndayslm, !bSingle, cmonname);
@@ -250,13 +259,13 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
         {
             short int cmonth1;
             char leap1[2] = {0x00, 0x00};
-            size_t nstartlm1 = size_t(vmoons[moncnt + 1] - jdcnt + 1);
-            size_t ndayslm1;
+            int nstartlm1 = int(vmoons[moncnt + 1] - jdcnt + 1);
+            int ndayslm1;
             char cmonname1[100];
-            if (moncnt < vmoons.size() - 2)
-                ndayslm1 = size_t(vmoons[moncnt + 2] - vmoons[moncnt + 1]);
+            if (moncnt < int(vmoons.size()) - 2)
+                ndayslm1 = int(vmoons[moncnt + 2] - vmoons[moncnt + 1]);
             else
-                ndayslm1 = size_t(nextnew - vmoons.back());
+                ndayslm1 = int(nextnew - vmoons.back());
             if (pmode == 0 && nEncoding == 'a')
             {
                 GetMonthNumber(vmonth[moncnt + 1], cmonth1, leap1);
@@ -267,7 +276,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                     tiangan[tiancnt], dizhi[dicnt],
                     leap1, cmonth1, (ndayslm1 == 30) ? 'D' : 'X', nstartlm1);
             }
-            else if (pmode == 0 && nEncoding != 'a' || pmode == 1)
+            else if ((pmode == 0 && nEncoding != 'a') || pmode == 1)
             {
                 Number2MonthCH(vmonth[moncnt + 1], nstartlm1, ndayslm1, nEncoding, cmonname1);
                 sprintf(monthhead,
@@ -304,7 +313,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                     monnames[month - 1], year, tiangan[tiancnt0], dizhi[dicnt0],
                     leap, cmonth, (ndayslm == 30) ? 'D' : 'X', nstartlm);
             }
-            else if (pmode == 0 && nEncoding != 'a' || pmode == 1)
+            else if ((pmode == 0 && nEncoding != 'a') || pmode == 1)
             {
                 sprintf(monthhead,
                     "%s %d%s%s%s%s%s%s",
@@ -330,18 +339,18 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
     }
     else
     {
-        if (moncnt < vmoons.size() - 1 && vmoons[moncnt + 1] < jdnext)
+        if (moncnt < int(vmoons.size()) - 1 && vmoons[moncnt + 1] < jdnext)
         /* Two lunar months in one month */
         {
             short int cmonth1;
             char leap1[2] = {0x00, 0x00};
-            size_t nstartlm1 = size_t(vmoons[moncnt + 1] - jdcnt + 1);
-            size_t ndayslm1;
+            int nstartlm1 = int(vmoons[moncnt + 1] - jdcnt + 1);
+            int ndayslm1;
             char cmonname1[100];
-            if (moncnt < vmoons.size() - 2)
-                ndayslm1 = size_t(vmoons[moncnt + 2] - vmoons[moncnt + 1]);
+            if (moncnt < int(vmoons.size()) - 2)
+                ndayslm1 = int(vmoons[moncnt + 2] - vmoons[moncnt + 1]);
             else
-                ndayslm1 = size_t(nextnew - vmoons.back());
+                ndayslm1 = int(nextnew - vmoons.back());
             if (pmode == 0 && nEncoding == 'a')
             {
                 GetMonthNumber(vmonth[moncnt + 1], cmonth1, leap1);
@@ -351,7 +360,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                     leap, cmonth, (ndayslm == 30) ? 'D' : 'X', nstartlm,
                     leap1, cmonth1, (ndayslm1 == 30) ? 'D' : 'X', nstartlm1);
             }
-            else if (pmode == 0 && nEncoding != 'a' || pmode == 1)
+            else if ((pmode == 0 && nEncoding != 'a') || pmode == 1)
             {
                 Number2MonthCH(vmonth[moncnt + 1], nstartlm1, ndayslm1, nEncoding, cmonname1);
                 sprintf(monthhead,
@@ -381,7 +390,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
         else if (month == 2 && vmoons[moncnt] >= jdnext)
         /* No new moon in February */
         {
-            ndayslm = size_t(vmoons[moncnt] - vmoons[moncnt - 1]);
+            ndayslm = int(vmoons[moncnt] - vmoons[moncnt - 1]);
             if (pmode == 0 && nEncoding == 'a')
             {
                 GetMonthNumber(vmonth[moncnt - 1], cmonth, leap);
@@ -389,7 +398,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                     monnames[month - 1], year, tiangan[tiancnt], dizhi[dicnt],
                     leap, cmonth, (ndayslm == 30) ? 'D' : 'X');
             }
-            else if (pmode == 0 && nEncoding != 'a' || pmode == 1)
+            else if ((pmode == 0 && nEncoding != 'a') || pmode == 1)
             {
                 Number2MonthCH(vmonth[moncnt - 1], nstartlm, ndayslm, nEncoding, cmonname);
                 char *p = strstr(cmonname, (*CHmiscchar)[14]) + 2 * nCHchars;
@@ -429,7 +438,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                     monnames[month - 1], year, tiangan[tiancnt], dizhi[dicnt],
                     leap, cmonth, (ndayslm == 30) ? 'D' : 'X', nstartlm);
             }
-            else if (pmode == 0 && nEncoding != 'a' || pmode == 1)
+            else if ((pmode == 0 && nEncoding != 'a') || pmode == 1)
             {
                 sprintf(monthhead,
                     "%s %d%s%s%s%s%s%s", monnames[month - 1], year, sp, sp,
@@ -488,7 +497,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
         char *p1 = strstr(monthhead, "(");
         char *p2 = strstr(monthhead, ")");
         int nlen = int(p2 - p1) - 1;
-        int nheadlen = strlen(monthhead);
+        int nheadlen = (int)strlen(monthhead);
         if (nheadlen - nlen - 66 > 56)
             nmove = (4200 - 78 * (nlen + (nheadlen - nlen - 86) / 2 + 3)) / 2;
         else if (nheadlen - nlen - 66 > 30)
@@ -658,6 +667,13 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                     *p = 0;
                 }
             }
+#ifdef HILIGHTTODAY
+            if (today->tm_year + 1900 == (int)year && today->tm_mon + 1 == (int)month && today->tm_mday == (int)dcnt)
+            {
+            	if (pmode == 0)
+                    printf(ANSI_REV);
+            }
+#endif
             if (pmode == 0 || pmode == 1)
                 printf("%2d", dcnt);
             else if (pmode == 3)
@@ -705,7 +721,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                 posy -= 7;
                 printf("%d %d moveto gsave ptc", posx, posy);
             }
-            if (jdcnt != vterms[termcnt] && jdcnt != vmoons[moncnt] && !sameday)
+			if (!sameday && (termcnt >= int(vterms.size()) || jdcnt != vterms[termcnt]) && (moncnt >= int(vmoons.size()) || jdcnt != vmoons[moncnt]))
             {
                 if (pmode == 0)
                 {
@@ -724,7 +740,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                     else
                         printf(" ");
                     Number2DayCH(ldcnt, nEncoding, cdayname);
-                    int nlen = strlen(cdayname);
+                    int nlen = (int)strlen(cdayname);
                     printf("%s", cdayname);
                     if (i == 0 || i == 6)
                         printf("</font>");
@@ -754,7 +770,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                 else if (pmode == 2)
                 {
                     Number2DayPS(ldcnt, cdayname);
-                    int nlen = strlen(cdayname);
+                    int nlen = (int)strlen(cdayname);
                     if (nlen > 8)
                         printf(" grestore -%d 0 rmoveto gsave ptc",
                                ((nlen - 8) / 4 * 3));
@@ -775,7 +791,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                         Number2MonthCH(vmonth[moncnt++], 1, 30, nEncoding, cmonname);
                         char *p = strstr(cmonname, (*CHmiscchar)[14]) + nCHchars;
                         *p = 0;
-                        int nlen = strlen(cmonname);
+                        int nlen = (int)strlen(cmonname);
                         if (nlen <= 3 * nCHchars)
                             printf(" ");
                         printf("%s", cmonname);
@@ -788,7 +804,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                 else if (pmode == 1)
                 {
                     Number2DayCH(ldcnt, nEncoding, cdayname);
-                    int nlen = strlen(cdayname);
+                    int nlen = (int)strlen(cdayname);
                     printf(" %s", cdayname);
                     if (i == 0 || i == 6)
                         printf("</font>");
@@ -807,9 +823,9 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                 }
                 sameday = false;
             }
-            else if (jdcnt == vterms[termcnt])
+            else if (termcnt < int(vterms.size()) && jdcnt == vterms[termcnt])
             {
-                if (jdcnt == vmoons[moncnt])
+                if (moncnt < int(vmoons.size()) && jdcnt == vmoons[moncnt])
                     sameday = true;
                 if (pmode == 0)
                 {
@@ -843,7 +859,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                     if (sameday)
                     {
                         Number2MonthPS(vmonth[moncnt++], 1, 30, true, cmonname);
-                        int nlen = strlen(cmonname);
+                        int nlen = (int)strlen(cmonname);
                         if (!bSingle)
                             printf(" grestore -6 0 rmoveto gsave ptc");
                         if (!bSingle && nlen > 8)
@@ -875,7 +891,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                         Number2MonthCH(vmonth[moncnt++], 1, 30, nEncoding, cmonname);
                         char *p = strstr(cmonname, (*CHmiscchar)[14]) + nCHchars;
                         *p = 0;
-                        int nlen = strlen(cmonname);
+                        int nlen = (int)strlen(cmonname);
                         if (nlen <= 3 * nCHchars)
                             printf(" ");
                         printf("%s", cmonname);
@@ -892,7 +908,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                     *p = 0;
                     if (pmode == 1)
                     {
-                        int nlen = strlen(cmonname);
+                        int nlen = (int)strlen(cmonname);
                         printf(" %s", cmonname);
                         if (i == 0 || i == 6)
                             printf("</font>");
@@ -913,7 +929,7 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
                 else if (pmode == 2)
                 {
                     Number2MonthPS(vmonth[moncnt++], 1, 30, true, cmonname);
-                    int nlen = strlen(cmonname);
+                    int nlen = (int)strlen(cmonname);
                     if (nlen > 8)
                         printf(" grestore -%d 0 rmoveto gsave ptc",
                                ((nlen - 8) / 4 * 3));
@@ -925,9 +941,16 @@ void PrintMonth(short int year, short int month, vdouble& vterms,
             }
             if (pmode == 3)
                 printf("cmonthname=\"%s\" cdatename=\"%s\" />\n", cmonname, cdayname);
+#ifdef HILIGHTTODAY
+            if (today->tm_year + 1900 == (int)year && today->tm_mon + 1 == (int)month && today->tm_mday == (int)dcnt)
+            {
+            	if (pmode == 0)
+                    printf(ANSI_NORMAL);
+            }
+#endif
             dcnt++;
             jdcnt++;
-            if (jdcnt == vmoons[moncnt])
+            if (moncnt < int(vmoons.size()) && jdcnt == vmoons[moncnt])
                 ldcnt = 1;
             else
                 ldcnt++;

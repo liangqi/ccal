@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2000-2009, by Zhuo Meng (zxm8@case.edu).
+   Copyright (c) 2000-2012, by Zhuo Meng (zxm8@case.edu).
    All rights reserved.
 
    Distributed under the terms of the GNU General Public License as
@@ -19,7 +19,7 @@
 #ifndef PSMONTH_H
 #define PSMONTH_H
 
-void MonthStartPS(size_t nstart, char *monstart);
+void MonthStartPS(int nstart, char *monstart);
 
 /* Input:
    month, month number with .5 indicating leap month
@@ -30,7 +30,7 @@ void MonthStartPS(size_t nstart, char *monstart);
    monname, C string containing the PS characters for the month.
             monname should be allocated at least 21 bytes before the call
 */
-void Number2MonthPS(double month, size_t nstart, size_t ndays, bool bYear, char *monname);
+void Number2MonthPS(double month, int nstart, int ndays, bool bYear, char *monname);
 
 /* Input:
    nday, day number (1 - 30)
@@ -38,7 +38,7 @@ void Number2MonthPS(double month, size_t nstart, size_t ndays, bool bYear, char 
    dayname, C string containing the PS characters for the day.
             dayname should be allocated at least 9 bytes before the call
 */
-void Number2DayPS(size_t nday, char *dayname);
+void Number2DayPS(int nday, char *dayname);
 
 /* Input:
    titlestr, string to be included in the title, normally either
